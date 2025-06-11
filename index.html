@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TixMix - Enter seat details</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .header {
+            background: white;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .logo {
+            background: #6366f1;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .header-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 32px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .left-section {
+            padding: 32px;
+        }
+        
+        .event-info {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .event-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #8b1538, #d4af37);
+            min-height: 120px;
+            min-width: 120px;
+            display: inline-block;
+        }
+        
+        .event-details h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .event-details p {
+            color: #6b7280;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+        
+        .form-section h3 {
+            color: #6b7280;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .form-control:read-only {
+            background-color: #f9fafb;
+            color: #6b7280;
+            cursor: default;
+        }
+
+        .form-control:read-only:focus {
+            border-color: #e5e7eb;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .radio-group {
+            margin: 24px 0;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .radio-option input[type="radio"] {
+            margin-top: 2px;
+        }
+        
+        .radio-option label {
+            font-size: 16px;
+            line-height: 1.4;
+        }
+        
+        .radio-option .help-text {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .fan-protect {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 40px;
+            padding: 16px;
+            background: #f0f9ff;
+            border-radius: 8px;
+        }
+        
+        .fan-protect-icon {
+            width: 24px;
+            height: 24px;
+            background: #0ea5e9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .fan-protect-text {
+            font-size: 14px;
+            color: #0369a1;
+        }
+        
+        .right-section {
+            background: #f8f9fa;
+            padding: 32px;
+            border-left: 1px solid #e5e7eb;
+        }
+        
+        .mobile-badge {
+            background: #e5e7eb;
+            color: #6b7280;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        
+        .ticket-info {
+            margin-bottom: 32px;
+        }
+        
+        .ticket-info h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .ticket-info p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .verification-section {
+            padding-top: 32px;
+        }
+        
+        .verification-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .verification-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        
+        .verification-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+        
+        .qr-container {
+            display: flex;
+            justify-content: center;
+            margin: 24px 0;
+        }
+        
+        .qr-code {
+            width: 160px;
+            height: 160px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .qr-code:hover {
+            transform: scale(1.02);
+        }
+        
+        .qr-placeholder {
+            width: 140px;
+            height: 140px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZAQAAAADskrjOAAAAiElEQVR42gF9AIL/AAEJwAAAfeXfAALIxPIAAgAhgAACAPeAAAI46A4AAAFVQAAB/zRMAQAltV8AA+QDRRAA3bYLAALNx80AAB0YzwAAH9Q2gAAVXNAAAF7RaQAAcecEgAH/EGUMAAHRVwADfeMHxQBFKgYAAgAJGAACAFiSAAI42BQAAAEDGwCqmiBsVLewogAAAABJRU5ErkJggg==') no-repeat center;
+            background-size: contain;
+        }
+
+        .download-section {
+            text-align: center;
+        }
+        
+        .download-text {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 16px;
+        }
+        
+        .app-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .app-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #1f2937;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .app-button:hover {
+            background: #374151;
+        }
+        
+        .app-icon {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 4px;
+        }
+        
+        .continue-button {
+            background: #d1d5db;
+            color: #9ca3af;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            float: right;
+            margin-top: 24px;
+            cursor: not-allowed;
+            transition: all 0.3s ease;
+        }
+
+        .continue-button.active {
+            background: #6366f1;
+            color: white;
+            cursor: pointer;
+        }
+
+        .continue-button.active:hover {
+            background: #5b5bd6;
+        }
+
+        .radio-group.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Loading state styles */
+        .verification-loading {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .spinner {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #6366f1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .spinner:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .loading-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .verification-success {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-checkmark {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .success-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #065f46;
+            margin-bottom: 8px;
+        }
+
+        .success-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .carddium-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 16px;
+            padding: 8px 12px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #ea580c;
+            font-weight: 500;
+        }
+
+        .carddium-icon {
+            width: 16px;
+            height: 16px;
+            background: #ea580c;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+        /* Hidden state */
+        .hidden {
+            display: none;
+        }
+        
+        /* Demo button */
+        .demo-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        
+        .demo-button:hover {
+            background: #5b5bd6;
+        }
+    </style>
+</head>
+<body>
+    <button class="demo-button" onclick="toggleVerificationState()">
+        Simulate QR Scan
+    </button>
+
+    <div class="header">
+        <div class="logo">TixMix</div>
+        <div class="header-title">Enter seat details</div>
+    </div>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="left-section">
+                <div class="event-info">
+                    <div class="event-image">&nbsp;</div>
+                    <div class="event-details">
+                        <h2>Mary Poppins Jr.: A Summer Theater Camp Production</h2>
+                        <p>Amaturo Theater at Broward Center for the Performing Arts, Fort Lauderdale, Florida, USA</p>
+                        <p>Jul 12 • Sat • 2:00 PM</p>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>WHERE ARE YOUR SEATS?</h3>
+                    
+                    <div class="form-group">
+                        <select class="form-control" id="section-select">
+                            <option value="">Section</option>
+                            <option value="ORCHC">ORCHC</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Row" id="row-input">
+                    </div>
+                    
+                    <div class="form-row">
+                        <input type="text" class="form-control" placeholder="First seat" id="first-seat-input">
+                        <input type="text" class="form-control" placeholder="Last seat" id="last-seat-input">
+                    </div>
+                    
+                    <div class="radio-group" id="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="complete" name="info-status" checked>
+                            <label for="complete">I have all the information</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="missing" name="info-status">
+                            <div>
+                                <label for="missing">I am missing seat or row information</label>
+                                <div class="help-text">Missing row details decreases the visibility of your listing</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Verified Badge (hidden initially) -->
+                    <div id="verified-badge" style="display: none; justify-content: center; align-items: center; gap: 12px; margin: 24px 0; padding: 16px; background: #f0f9ff; border-radius: 8px;">
+                        <div style="width: 24px; height: 24px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">✓</div>
+                        <div style="font-weight: 600; color: #065f46;">Verified Ticket</div>
+                    </div>
+                </div>
+                
+                <div class="fan-protect">
+                    <div class="fan-protect-icon">✓</div>
+                    <div>
+                        <strong>FanProtect</strong>
+                        <div class="fan-protect-text">We back every order so you can sell with 100% confidence.</div>
+                    </div>
+                </div>
+                
+                <button class="continue-button" id="continue-button">Continue</button>
+            </div>
+            
+            <div class="right-section">
+                <div class="verification-section">
+                    <!-- Initial QR Code State -->
+                    <div id="qr-state">
+                        <div class="verification-header">
+                            <div class="verification-title">Sell Faster.</div>
+                            <div class="verification-subtitle">Get a "Verified Ticket" badge in 3 easy steps:</div>
+                        </div>
+                        
+                        <div style="text-align: left; margin-bottom: 24px; padding: 0 20px;">
+                            <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;">
+                                <div style="background: #6366f1; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; flex-shrink: 0;">1</div>
+                                <div>
+                                    <div style="font-weight: 600; margin-bottom: 8px;">Launch Carddium App</div>
+                                    <div class="app-buttons" style="justify-content: flex-start;">
+                                        <a href="#" class="app-button">
+                                            <div class="app-icon"></div>
+                                            App Store
+                                        </a>
+                                        <a href="#" class="app-button">
+                                            <div class="app-icon"></div>
+                                            Google Play
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                                <div style="background: #6366f1; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; flex-shrink: 0;">2</div>
+                                <div style="font-weight: 600;">Log in to original ticket issuer to verify ticket</div>
+                            </div>
+                            
+                            <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;">
+                                <div style="background: #6366f1; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; flex-shrink: 0;">3</div>
+                                <div style="font-weight: 600;">Scan the QR code below</div>
+                            </div>
+                        </div>
+                        
+                        <div class="qr-container">
+                            <div class="qr-code" onclick="simulateQRScan()">
+                                <div class="qr-placeholder"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div id="loading-state" class="verification-loading hidden">
+                        <div class="spinner" onclick="simulateVerificationComplete()"></div>
+                        <div class="loading-title">Verifying your ticket</div>
+                        <div class="loading-subtitle">Carddium is confirming ticket ownership with the original issuer...</div>
+                    </div>
+
+                    <!-- Success State -->
+                    <div id="success-state" class="verification-success hidden">
+                        <div class="success-checkmark">✓</div>
+                        <div class="success-title">Ticket verified!</div>
+                        <div class="success-subtitle">Your ticket ownership has been confirmed and seat details have been populated</div>
+                    </div>
+
+                    <!-- Always visible Carddium branding -->
+                    <div class="carddium-logo">
+                        <div class="carddium-icon">C</div>
+                        Powered by Carddium
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 12px; font-size: 11px; color: #6b7280; line-height: 1.4;">
+                        We partnered with Carddium to enable ticket authentication for safer reselling.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let verificationState = 'initial'; // 'initial', 'loading', 'success'
+
+        function simulateQRScan() {
+            if (verificationState === 'initial') {
+                toggleVerificationState();
+            }
+        }
+
+        function simulateVerificationComplete() {
+            if (verificationState === 'loading') {
+                toggleVerificationState();
+            }
+        }
+
+        function toggleVerificationState() {
+            const qrState = document.getElementById('qr-state');
+            const loadingState = document.getElementById('loading-state');
+            const successState = document.getElementById('success-state');
+            const radioGroup = document.getElementById('radio-group');
+            const verifiedBadge = document.getElementById('verified-badge');
+            const demoButton = document.querySelector('.demo-button');
+            
+            if (verificationState === 'initial') {
+                // Show loading state and hide radio group
+                qrState.classList.add('hidden');
+                loadingState.classList.remove('hidden');
+                successState.classList.add('hidden');
+                radioGroup.style.display = 'none';
+                verifiedBadge.style.display = 'none';
+                demoButton.textContent = 'Complete Verification';
+                verificationState = 'loading';
+            } else if (verificationState === 'loading') {
+                // Show success state, populate form, and show verified badge
+                qrState.classList.add('hidden');
+                loadingState.classList.add('hidden');
+                successState.classList.remove('hidden');
+                verifiedBadge.style.display = 'flex';
+                populateFormFields();
+                demoButton.textContent = 'Reset Demo';
+                verificationState = 'success';
+            } else {
+                // Reset to initial state
+                successState.classList.add('hidden');
+                loadingState.classList.add('hidden');
+                qrState.classList.remove('hidden');
+                radioGroup.style.display = 'block';
+                verifiedBadge.style.display = 'none';
+                clearFormFields();
+                demoButton.textContent = 'Simulate QR Scan';
+                verificationState = 'initial';
+            }
+        }
+
+        function populateFormFields() {
+            const sectionSelect = document.getElementById('section-select');
+            const rowInput = document.getElementById('row-input');
+            const firstSeatInput = document.getElementById('first-seat-input');
+            const lastSeatInput = document.getElementById('last-seat-input');
+            
+            sectionSelect.value = 'ORCHC';
+            rowInput.value = 'ROW A';
+            firstSeatInput.value = '1';
+            lastSeatInput.value = '1';
+            
+            // Make form elements read-only
+            sectionSelect.disabled = true;
+            rowInput.readOnly = true;
+            firstSeatInput.readOnly = true;
+            lastSeatInput.readOnly = true;
+            
+            // Activate continue button
+            document.getElementById('continue-button').classList.add('active');
+        }
+
+        function clearFormFields() {
+            const sectionSelect = document.getElementById('section-select');
+            const rowInput = document.getElementById('row-input');
+            const firstSeatInput = document.getElementById('first-seat-input');
+            const lastSeatInput = document.getElementById('last-seat-input');
+            
+            sectionSelect.value = '';
+            rowInput.value = '';
+            firstSeatInput.value = '';
+            lastSeatInput.value = '';
+            
+            // Make form elements editable again
+            sectionSelect.disabled = false;
+            rowInput.readOnly = false;
+            firstSeatInput.readOnly = false;
+            lastSeatInput.readOnly = false;
+            
+            // Deactivate continue button
+            document.getElementById('continue-button').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
