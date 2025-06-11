@@ -70,7 +70,9 @@
             width: 120px;
             height: 120px;
             border-radius: 8px;
-            background: linear-gradient(45deg, #8b1538, #d4af37);
+            background: url('marry.jpg') no-repeat center;
+            background-size: cover;
+            background-color: #8B4513;
             min-height: 120px;
             min-width: 120px;
             display: inline-block;
@@ -171,7 +173,7 @@
         .fan-protect-icon {
             width: 24px;
             height: 24px;
-            background: #0ea5e9;
+            background: #6366f1;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -183,7 +185,7 @@
         
         .fan-protect-text {
             font-size: 14px;
-            color: #0369a1;
+            color: #333;
         }
         
         .right-section {
@@ -350,25 +352,48 @@
             padding: 40px 20px;
         }
 
-        .spinner {
+        .progress-container {
             width: 80px;
             height: 80px;
             margin: 0 auto 24px;
-            border: 4px solid #e5e7eb;
-            border-top: 4px solid #6366f1;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+            position: relative;
             cursor: pointer;
             transition: transform 0.2s;
         }
 
-        .spinner:hover {
+        .progress-container:hover {
             transform: scale(1.05);
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .progress-ring {
+            width: 80px;
+            height: 80px;
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-bg {
+            fill: none;
+            stroke: #e5e7eb;
+            stroke-width: 4;
+        }
+
+        .progress-ring-progress {
+            fill: none;
+            stroke: #6366f1;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 226.19;
+            stroke-dashoffset: 226.19;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: bold;
+            color: #6366f1;
         }
 
         .loading-title {
@@ -534,7 +559,7 @@
                 <div class="fan-protect">
                     <div class="fan-protect-icon">✓</div>
                     <div>
-                        <strong>FanProtect</strong>
+                        <strong style="color: #6366f1;">TrustMix</strong>
                         <div class="fan-protect-text">We back every order so you can sell with 100% confidence.</div>
                     </div>
                 </div>
@@ -589,9 +614,14 @@
 
                     <!-- Loading State -->
                     <div id="loading-state" class="verification-loading hidden">
-                        <div class="spinner" onclick="simulateVerificationComplete()"></div>
-                        <div class="loading-title">Verifying your ticket</div>
-                        <div class="loading-subtitle">Carddium is confirming ticket ownership with the original issuer...</div>
+                        <div class="progress-container" onclick="simulateVerificationComplete()">
+                            <svg class="progress-ring" viewBox="0 0 80 80">
+                                <circle class="progress-ring-bg" cx="40" cy="40" r="36"></circle>
+                                <circle class="progress-ring-progress" cx="40" cy="40" r="36" id="progress-circle"></circle>
+                            </svg>
+                            <div class="progress-text" id="progress-text">0%</div>
+                        </div>
+                        <div class="loading-title">Verifying your ticket..</div>
                     </div>
 
                     <!-- Success State -->
@@ -617,6 +647,8 @@
 
     <script>
         let verificationState = 'initial'; // 'initial', 'loading', 'success'
+        let verificationTimer = null;
+        let progressTimer = null;
 
         function simulateQRScan() {
             if (verificationState === 'initial') {
@@ -626,8 +658,44 @@
 
         function simulateVerificationComplete() {
             if (verificationState === 'loading') {
+                // Clear timers and complete immediately
+                if (verificationTimer) {
+                    clearTimeout(verificationTimer);
+                    verificationTimer = null;
+                }
+                if (progressTimer) {
+                    clearInterval(progressTimer);
+                    progressTimer = null;
+                }
                 toggleVerificationState();
             }
+        }
+
+        function startProgressAnimation() {
+            const progressCircle = document.getElementById('progress-circle');
+            const progressText = document.getElementById('progress-text');
+            const radius = 36;
+            const circumference = 2 * Math.PI * radius; // 226.19
+            let progress = 0;
+            
+            // Reset progress
+            progressCircle.style.strokeDashoffset = circumference;
+            progressText.textContent = '0%';
+            
+            // Start progress animation - 50 updates over 3.33 seconds = 66.67ms intervals (50% faster)
+            progressTimer = setInterval(() => {
+                progress += 2; // 2% every 66.67ms = 100% in 3.33 seconds
+                if (progress > 100) progress = 100;
+                
+                const offset = circumference - (circumference * progress / 100);
+                progressCircle.style.strokeDashoffset = offset;
+                progressText.textContent = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(progressTimer);
+                    progressTimer = null;
+                }
+            }, 66.67);
         }
 
         function toggleVerificationState() {
@@ -638,6 +706,12 @@
             const verifiedBadge = document.getElementById('verified-badge');
             const demoButton = document.querySelector('.demo-button');
             
+            // Clear any existing timer
+            if (verificationTimer) {
+                clearTimeout(verificationTimer);
+                verificationTimer = null;
+            }
+            
             if (verificationState === 'initial') {
                 // Show loading state and hide radio group
                 qrState.classList.add('hidden');
@@ -645,8 +719,17 @@
                 successState.classList.add('hidden');
                 radioGroup.style.display = 'none';
                 verifiedBadge.style.display = 'none';
-                demoButton.textContent = 'Complete Verification';
+                demoButton.style.display = 'none';
                 verificationState = 'loading';
+                
+                // Start progress animation
+                startProgressAnimation();
+                
+                // Start 3.33-second timer to auto-complete verification (50% faster than 5 seconds)
+                verificationTimer = setTimeout(() => {
+                    toggleVerificationState();
+                }, 3333);
+                
             } else if (verificationState === 'loading') {
                 // Show success state, populate form, and show verified badge
                 qrState.classList.add('hidden');
@@ -654,6 +737,7 @@
                 successState.classList.remove('hidden');
                 verifiedBadge.style.display = 'flex';
                 populateFormFields();
+                demoButton.style.display = 'block';
                 demoButton.textContent = 'Reset Demo';
                 verificationState = 'success';
             } else {
@@ -664,6 +748,7 @@
                 radioGroup.style.display = 'block';
                 verifiedBadge.style.display = 'none';
                 clearFormFields();
+                demoButton.style.display = 'block';
                 demoButton.textContent = 'Simulate QR Scan';
                 verificationState = 'initial';
             }
